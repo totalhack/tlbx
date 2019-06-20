@@ -1,0 +1,7 @@
+climax
+orderedset
+python-dateutil
+requests
+simplejson
+sqlparse
+wheel
