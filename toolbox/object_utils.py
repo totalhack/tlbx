@@ -1,4 +1,5 @@
-from collections import MutableMapping, Callable
+from collections.abc import MutableMapping, Callable
+from functools import wraps
 from importlib import import_module
 import inspect
 import sys
@@ -8,10 +9,10 @@ def chunk(l, n):
         yield l[i:i + n]
 
 def get_class_vars(cls):
-    return set([i for i in dir(cls) if (not isinstance(i, Callable)) and (not i.startswith('_'))])
+    return {i for i in dir(cls) if (not isinstance(i, Callable)) and (not i.startswith('_'))}
 
 def get_class_var_values(cls):
-    return set([getattr(cls, i) for i in dir(cls) if (not isinstance(i, Callable)) and (not i.startswith('_'))])
+    return {getattr(cls, i) for i in dir(cls) if (not isinstance(i, Callable)) and (not i.startswith('_'))}
 
 class ClassVarContainsMeta(type):
     def __contains__(cls, key):

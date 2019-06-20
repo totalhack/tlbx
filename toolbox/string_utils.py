@@ -6,9 +6,9 @@ def is_int(v):
         return False
 
     try:
-        i = int(str(v))
+        int(str(v))
         return True
-    except:
+    except ValueError:
         return False
 
 def is_num(v):
@@ -16,9 +16,9 @@ def is_num(v):
         return False
 
     try:
-        n = float(v)
+        float(v)
         return True
-    except:
+    except ValueError:
         return False
 
 def get_string_format_args(s):

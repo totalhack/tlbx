@@ -1,5 +1,6 @@
-import requests
 import time
+
+import requests
 
 from toolbox.logging_utils import dbg
 

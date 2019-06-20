@@ -1,4 +1,5 @@
-from collections import OrderedDict, MutableMapping
+from collections import OrderedDict
+from collections.abc import MutableMapping
 try:
     import simplejson as json
     from simplejson import JSONEncoder
