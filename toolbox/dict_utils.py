@@ -8,8 +8,6 @@ except ImportError:
     import json
     from json import JSONEncoder
 
-from orderedset import OrderedSet
-
 # https://stackoverflow.com/questions/7204805/dictionaries-of-dictionaries-merge
 def dictmerge(x, y, path=None, overwrite=False):
     if path is None:
@@ -58,11 +56,3 @@ class JSONMixin:
 
     def to_jsons(self):
         return json.dumps(self.__dict__)
-
-def orderedsetify(obj):
-    '''Take ordered iterable and turn it into OrderedSet'''
-    if isinstance(obj, OrderedSet):
-        return obj
-    if isinstance(obj, (list, tuple)):
-        return OrderedSet(obj)
-    assert False, 'Not sure how to setify %s' % obj

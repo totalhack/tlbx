@@ -4,10 +4,6 @@ from importlib import import_module
 import inspect
 import sys
 
-def chunk(l, n):
-    for i in range(0, len(l), n):
-        yield l[i:i + n]
-
 def get_class_vars(cls):
     return {i for i in dir(cls) if (not isinstance(i, Callable)) and (not i.startswith('_'))}
 
