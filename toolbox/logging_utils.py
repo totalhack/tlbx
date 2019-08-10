@@ -1,11 +1,10 @@
+import logging
 from pprint import pformat
 import sys
 
 import sqlparse as sp
 
 from toolbox.object_utils import get_class_vars
-
-# TODO: allow use of python logging module?
 
 class FontSpecialChars:
     ENDC = '\033[0m'
@@ -27,6 +26,7 @@ RESERVED_COLORS = [
     'BLACK',  # to avoid conflicts with terminal defaults
     'WHITE'   # to avoid conflicts with terminal defaults
 ]
+
 COLOR_OPTIONS = [x for x in get_class_vars(FontColors) if x not in RESERVED_COLORS]
 
 class FontEffects:
@@ -34,10 +34,15 @@ class FontEffects:
     UNDERLINE = '\033[4m'
     INVERTED = '\033[7m'
 
+logging.basicConfig(format='%(message)s')
+
+def get_logging_level():
+    return logging.getLogger().getEffectiveLevel()
+
 def sqlformat(sql):
     return sp.format(sql, reindent=True, keyword_case='upper')
 
-def log(msg, label='parent', indent=0, color=None, autocolor=False, format_func=pformat):
+def format_msg(msg, label='parent', indent=0, color=None, autocolor=False, format_func=pformat):
     if isinstance(format_func, str):
         format_func = globals()[format_func]
 
@@ -66,27 +71,47 @@ def log(msg, label='parent', indent=0, color=None, autocolor=False, format_func=
     if color:
         msg = getattr(FontColors, color.upper()) + msg + FontSpecialChars.ENDC
 
-    print(msg)
+    return msg
 
-def dbg(msg, label='parent', config=None, **kwargs):
-    if config and not config.get('DEBUG', False):
+def log(msg, label='parent', **kwargs):
+    if get_logging_level() > logging.INFO:
         return
-
     if label == 'parent':
         label = sys._getframe().f_back.f_code.co_name
-    log(msg, label=label, autocolor=True, **kwargs)
+    msg = format_msg(msg, label=label, autocolor=True, **kwargs)
+    logging.info(msg)
 
-def dbgsql(sql, label='parent', config=None):
+def dbg(msg, label='parent', **kwargs):
+    if get_logging_level() > logging.DEBUG:
+        return
     if label == 'parent':
         label = sys._getframe().f_back.f_code.co_name
+    msg = format_msg(msg, label=label, autocolor=True, **kwargs)
+    logging.debug(msg)
 
-    dbg(sql, label=label, config=config, format_func=sqlformat)
+def dbgsql(msg, label='parent', **kwargs):
+    if get_logging_level() > logging.DEBUG:
+        return
+    if label == 'parent':
+        label = sys._getframe().f_back.f_code.co_name
+    msg = format_msg(msg, label=label, autocolor=True, format_func=sqlformat, **kwargs)
+    logging.debug(msg)
 
-def warn(msg, label='WARNING'):
-    log(msg, label=label, color='yellow')
+def warn(msg, label='parent', **kwargs):
+    if get_logging_level() > logging.WARNING:
+        return
+    if label == 'parent':
+        label = sys._getframe().f_back.f_code.co_name
+    msg = format_msg(msg, label=label, color='yellow', **kwargs)
+    logging.warning(msg)
 
-def error(msg, label='ERROR'):
-    log(msg, label=label, color='red')
+def error(msg, label='parent', **kwargs):
+    if get_logging_level() > logging.ERROR:
+        return
+    if label == 'parent':
+        label = sys._getframe().f_back.f_code.co_name
+    msg = format_msg(msg, label=label, color='red', **kwargs)
+    logging.error(msg)
 
 class PrintMixin:
     repr_attrs = []
