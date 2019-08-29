@@ -1,5 +1,7 @@
+black
 climax
 orderedset
+pre-commit
 pylint
 python-dateutil
 requests
