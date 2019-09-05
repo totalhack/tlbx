@@ -1,5 +1,5 @@
 import logging
-from pprint import pformat, pprint
+from pprint import pformat, pprint as pp
 import sys
 
 import sqlparse as sp

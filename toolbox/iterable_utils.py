@@ -6,14 +6,28 @@ from orderedset import OrderedSet
 
 
 def powerset(iterable):
-    "powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"
+    """powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"""
     s = list(iterable)
     return chain.from_iterable(combinations(s, r) for r in range(len(s) + 1))
 
 
-def chunks(l, n):
-    for i in range(0, len(l), n):
-        yield l[i : i + n]
+def chunks(l, chunksize):
+    for i in range(0, len(l), chunksize):
+        yield l[i : i + chunksize]
+
+
+def read_chunks(reader, chunksize, limit=None):
+    """Given an iterator/generator, read/yield chunks of chunksize up to
+    (optional) limit"""
+    chunk = []
+    for i, line in enumerate(reader):
+        if limit and i >= limit:
+            break
+        if i % chunksize == 0 and i > 0:
+            yield chunk
+            del chunk[:]
+        chunk.append(line)
+    yield chunk
 
 
 def iter_or(iterable):

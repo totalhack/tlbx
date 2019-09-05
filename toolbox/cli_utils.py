@@ -6,9 +6,7 @@ arg = climax.argument
 
 
 def st():
-    import pdb
-
-    pdb.Pdb().set_trace(inspect.currentframe().f_back)
+    __import__("pdb").Pdb().set_trace(inspect.currentframe().f_back)
 
 
 class Script:
