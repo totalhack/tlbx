@@ -20,6 +20,6 @@ To add as a dependency for your existing project:
 
 ```shell
 cd yourproject
-echo "git+ssh://git@github.com/totalhack/toolbox.git#egg=toolbox" >> requirements.txt
+echo "git+git://github.com/totalhack/toolbox.git#egg=toolbox" >> requirements.txt
 pip install -r requirements.txt
 ```
