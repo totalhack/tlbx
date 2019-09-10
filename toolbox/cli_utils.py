@@ -20,6 +20,10 @@ class Arg:
     def __call__(self, *args, **kwargs):
         return self.climax_arg(*args, **kwargs)
 
+    @property
+    def name(self):
+        return self.args[0]
+
 
 class Script:
     """Decorator for main function in a script that provides CLI parsing"""
