@@ -9,6 +9,18 @@ def st():
     __import__("pdb").Pdb().set_trace(inspect.currentframe().f_back)
 
 
+class Arg:
+    """Decorator around climax.argument that stores arg values"""
+
+    def __init__(self, *args, **kwargs):
+        self.args = args
+        self.kwargs = kwargs
+        self.climax_arg = climax.argument(*args, **kwargs)
+
+    def __call__(self, *args, **kwargs):
+        return self.climax_arg(*args, **kwargs)
+
+
 class Script:
     """Decorator for main function in a script that provides CLI parsing"""
 
