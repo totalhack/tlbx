@@ -30,7 +30,7 @@ class Script:
 
     parents = []  # Override as list of climax.parent objects to inherit args
 
-    def __init__(self, script_args=None):
+    def __init__(self, *script_args):
         self.func = None
         self.script_args = script_args or []
 

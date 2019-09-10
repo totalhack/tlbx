@@ -1,7 +1,7 @@
 from toolbox import Script, arg
 
 
-@Script([arg("name", help="A name")])
+@Script(arg("name", help="A name"))
 def main(name):
     print("Name:", name)
 
