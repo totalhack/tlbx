@@ -2,7 +2,8 @@ import inspect
 
 import climax
 
-arg = climax.argument
+
+Parent = climax.parent
 
 
 def st():
