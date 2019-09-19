@@ -45,9 +45,11 @@ def extract_email_payload(msg, decode=True):
             payload = part.get_payload(decode=decode)
             payload = decode_if_necessary(payload, charset)
             parts.append(
-                EmailPayload(content_type=part.get_content_type()),
-                charset=charset,
-                payload=payload,
+                EmailPayload(
+                    content_type=part.get_content_type(),
+                    charset=charset,
+                    payload=payload,
+                )
             )
         return parts
     else:
