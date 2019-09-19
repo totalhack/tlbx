@@ -23,6 +23,41 @@ class EmailPayload(MappingMixin):
     charset = attr.ib()
 
 
+def update_email(
+    msg, frm=None, to=None, subject=None, body=None, html=None, attachments=None
+):
+    if frm:
+        msg.replace_header("from", frm)
+
+    if to:
+        msg.replace_header("to", to)
+
+    if subject:
+        msg.replace_header("subject", subject)
+
+    if body:
+        if msg.is_multipart():
+            payload = msg.get_payload()
+            new_body = EmailMessage()
+            new_body.set_content(body)
+            payload[0] = new_body
+            msg.set_payload(payload)
+        else:
+            msg.set_content(body)
+
+    if html:
+        msg.add_alternative(html, subtype="html")
+
+    if attachments:
+        if msg.is_multipart():
+            payload = msg.get_payload()
+            # Try to only keep the body. There might be a better way
+            msg.set_payload(payload[:1])
+        add_email_attachments(attachment)
+
+    return msg
+
+
 # -------- Read Emails
 
 
