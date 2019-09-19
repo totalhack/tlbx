@@ -1,7 +1,9 @@
 black
 climax
+imapclient
 orderedset
 pre-commit
+pytest
 pylint
 python-dateutil
 requests

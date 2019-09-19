@@ -1,10 +1,14 @@
-from toolbox import Script, arg
+from unittest.mock import patch
+
+from .test_utils import *
+from toolbox import Script, Arg
 
 
-@Script(arg("name", help="A name"))
-def main(name):
+@Script(Arg("name", help="A name"))
+def script(name):
     print("Name:", name)
 
 
-if __name__ == "__main__":
-    main()
+def test_script():
+    with patch("argparse._sys.argv", ["test_script_decorator.py", "test"]):
+        script()
