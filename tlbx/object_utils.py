@@ -4,33 +4,46 @@ from importlib import import_module
 import inspect
 import sys
 
+
 def get_class_vars(cls):
-    return {i for i in dir(cls) if (not isinstance(i, Callable)) and (not i.startswith('_'))}
+    return {
+        i for i in dir(cls) if (not isinstance(i, Callable)) and (not i.startswith("_"))
+    }
+
 
 def get_class_var_values(cls):
-    return {getattr(cls, i) for i in dir(cls) if (not isinstance(i, Callable)) and (not i.startswith('_'))}
+    return {
+        getattr(cls, i)
+        for i in dir(cls)
+        if (not isinstance(i, Callable)) and (not i.startswith("_"))
+    }
+
 
 class ClassVarContainsMeta(type):
     def __contains__(cls, key):
         return key in get_class_vars(cls)
 
+
 class ClassValueContainsMeta(type):
     def __contains__(cls, key):
         return key in get_class_var_values(cls)
 
+
 def import_object(name):
-    if '.' not in name:
+    if "." not in name:
         frame = sys._getframe(1)
-        module_name = frame.f_globals['__name__']
+        module_name = frame.f_globals["__name__"]
         object_name = name
     else:
-        module_name = '.'.join(name.split('.')[:-1])
-        object_name = name.split('.')[-1]
+        module_name = ".".join(name.split(".")[:-1])
+        object_name = name.split(".")[-1]
     return getattr(import_module(module_name), object_name)
+
 
 # https://stackoverflow.com/questions/1389180/automatically-initialize-instance-variables
 def initializer(func):
     names, varargs, keywords, defaults = inspect.getargspec(func)
+
     @wraps(func)
     def wrapper(self, *args, **kwargs):
         for name, arg in list(zip(names[1:], args)) + list(kwargs.items()):
@@ -41,7 +54,9 @@ def initializer(func):
                 if not hasattr(self, names[index]):
                     setattr(self, names[index], defaults[index])
         func(self, *args, **kwargs)
+
     return wrapper
+
 
 class MappingMixin(MutableMapping):
     def __setitem__(self, key, value):

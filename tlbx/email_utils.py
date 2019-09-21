@@ -8,7 +8,7 @@ import smtplib
 
 from imapclient import IMAPClient
 
-from toolbox.object_utils import MappingMixin
+from tlbx.object_utils import MappingMixin
 
 SMTP_SSL_PORT = 465
 

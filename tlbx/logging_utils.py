@@ -4,7 +4,7 @@ import sys
 
 import sqlparse as sp
 
-from toolbox.object_utils import get_class_vars
+from tlbx.object_utils import get_class_vars
 
 
 class FontSpecialChars:

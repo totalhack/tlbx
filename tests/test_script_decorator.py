@@ -1,7 +1,7 @@
 from unittest.mock import patch
 
 from .test_utils import *
-from toolbox import Script, Arg
+from tlbx import Script, Arg
 
 
 @Script(Arg("name", help="A name"))

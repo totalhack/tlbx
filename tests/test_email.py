@@ -2,8 +2,8 @@ import datetime
 import time
 
 from .test_utils import *
-from toolbox.logging_utils import dbg
-from toolbox.email_utils import *
+from tlbx.logging_utils import dbg
+from tlbx.email_utils import *
 
 
 def test_read_email():

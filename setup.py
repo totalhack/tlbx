@@ -22,10 +22,10 @@ with load_file("requirements.txt") as f:
     requires = f.read().split("\n")
 
 
-exec(open("toolbox/version.py").read())
+exec(open("tlbx/version.py").read())
 
 setup(
-    name="toolbox",
+    name="tlbx",
     description="Just some common utilities.",
     long_description=README,
     author="totalhack",
