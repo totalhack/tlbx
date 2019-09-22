@@ -9,4 +9,5 @@ python-dateutil
 requests
 simplejson
 sqlparse
+twine
 wheel
