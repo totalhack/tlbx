@@ -42,6 +42,7 @@ pip:
 	$(MAKE) dist
 	$(MAKE) upload
 	$(MAKE) test_venv
+	sleep 30
 	$(TEST_ENV)/bin/pip install -U tlbx==$(VERSION)
 	$(TEST_ENV)/bin/python -c "import tlbx"
 
@@ -49,6 +50,7 @@ test_pip:
 	$(MAKE) dist
 	$(MAKE) test_upload
 	$(MAKE) test_venv
+	sleep 30
 	$(TEST_ENV)/bin/pip install -i "https://test.pypi.org/simple/" --extra-index-url "https://pypi.org/simple/" tlbx==$(VERSION)
 	$(TEST_ENV)/bin/python -c "import tlbx"
 
