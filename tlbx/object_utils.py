@@ -73,3 +73,9 @@ class MappingMixin(MutableMapping):
 
     def __len__(self):
         return len(self.__dict__)
+
+
+# TODO: needs a better home?
+def get_caller(depth=0):
+    # Add 1 to depth so its the caller of the caller to this function
+    return sys._getframe(depth + 1).f_back.f_code.co_name

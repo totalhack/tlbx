@@ -4,7 +4,10 @@ import sys
 
 import sqlparse as sp
 
-from tlbx.object_utils import get_class_vars
+from tlbx.object_utils import get_class_vars, get_caller
+
+
+logging.basicConfig(format="%(message)s")
 
 
 class FontSpecialChars:
@@ -39,11 +42,10 @@ class FontEffects:
     INVERTED = "\033[7m"
 
 
-logging.basicConfig(format="%(message)s")
-
-
-def get_logging_level():
-    return logging.getLogger().getEffectiveLevel()
+def get_logging_level(logger=None):
+    if (not logger) or (not isinstance(logger, logging.Logger)):
+        logger = logging.getLogger()
+    return logger.getEffectiveLevel()
 
 
 def sqlformat(sql):
@@ -70,7 +72,7 @@ def format_msg(
 
     if label:
         if label == "parent":
-            label = sys._getframe().f_back.f_code.co_name
+            label = get_caller()
         msg = label.strip() + ": " + msg
 
     if (not color) and autocolor:
@@ -84,49 +86,54 @@ def format_msg(
     return msg
 
 
-def log(msg, label="parent", **kwargs):
-    if get_logging_level() > logging.INFO:
+def info(msg, label="parent", logger=None, **kwargs):
+    logger = logger or logging
+    if get_logging_level(logger) > logging.INFO:
         return
     if label == "parent":
-        label = sys._getframe().f_back.f_code.co_name
+        label = get_caller()
     msg = format_msg(msg, label=label, autocolor=True, **kwargs)
-    logging.info(msg)
+    logger.info(msg)
 
 
-def dbg(msg, label="parent", **kwargs):
-    if get_logging_level() > logging.DEBUG:
+def dbg(msg, label="parent", logger=None, **kwargs):
+    logger = logger or logging
+    if get_logging_level(logger) > logging.DEBUG:
         return
     if label == "parent":
-        label = sys._getframe().f_back.f_code.co_name
+        label = get_caller()
     msg = format_msg(msg, label=label, autocolor=True, **kwargs)
-    logging.debug(msg)
+    logger.debug(msg)
 
 
-def dbgsql(msg, label="parent", **kwargs):
-    if get_logging_level() > logging.DEBUG:
+def dbgsql(msg, label="parent", logger=None, **kwargs):
+    logger = logger or logging
+    if get_logging_level(logger) > logging.DEBUG:
         return
     if label == "parent":
-        label = sys._getframe().f_back.f_code.co_name
+        label = get_caller()
     msg = format_msg(msg, label=label, autocolor=True, format_func=sqlformat, **kwargs)
-    logging.debug(msg)
+    logger.debug(msg)
 
 
-def warn(msg, label="parent", **kwargs):
-    if get_logging_level() > logging.WARNING:
+def warn(msg, label="parent", logger=None, **kwargs):
+    logger = logger or logging
+    if get_logging_level(logger) > logging.WARNING:
         return
     if label == "parent":
-        label = sys._getframe().f_back.f_code.co_name
+        label = get_caller()
     msg = format_msg(msg, label=label, color="yellow", **kwargs)
-    logging.warning(msg)
+    logger.warning(msg)
 
 
-def error(msg, label="parent", **kwargs):
-    if get_logging_level() > logging.ERROR:
+def error(msg, label="parent", logger=None, **kwargs):
+    logger = logger or logging
+    if get_logging_level(logger) > logging.ERROR:
         return
     if label == "parent":
-        label = sys._getframe().f_back.f_code.co_name
+        label = get_caller()
     msg = format_msg(msg, label=label, color="red", **kwargs)
-    logging.error(msg)
+    logger.error(msg)
 
 
 class PrintMixin:
