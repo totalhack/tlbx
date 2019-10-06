@@ -1,4 +1,4 @@
-PACKAGE := toolbox
+PACKAGE := tlbx
 ENV := $(VIRTUAL_ENV)
 TEST_ENV := /tmp/tlbx_pip_test
 PIP := $(ENV)/bin/pip
