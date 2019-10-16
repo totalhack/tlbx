@@ -16,6 +16,12 @@ def chunks(l, chunksize):
         yield l[i : i + chunksize]
 
 
+def nchunks(a, n):
+    """Divide iterable a into n chunks"""
+    k, m = divmod(len(a), n)
+    return (a[i * k + min(i, m) : (i + 1) * k + min(i + 1, m)] for i in range(n))
+
+
 def read_chunks(reader, chunksize, limit=None):
     """Given an iterator/generator, read/yield chunks of chunksize up to
     (optional) limit"""
@@ -25,7 +31,7 @@ def read_chunks(reader, chunksize, limit=None):
             break
         if i % chunksize == 0 and i > 0:
             yield chunk
-            del chunk[:]
+            chunk = []
         chunk.append(line)
     yield chunk
 
