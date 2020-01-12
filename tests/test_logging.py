@@ -11,6 +11,30 @@ my_logger = logging.getLogger(__name__)
 my_logger.setLevel(logging.INFO)
 
 
+class PrintTest(PrintMixin):
+    repr_attrs = ["attr1", "attr2"]
+
+    def __init__(self):
+        self.attr1 = "test1"
+        self.attr2 = [x for x in range(50)]
+
+
+class PrintTest2(PrintMixin):
+    repr_attrs = ["attr3", "attr4"]
+
+    def __init__(self):
+        self.attr3 = "test3"
+        self.attr4 = PrintTest()
+
+
+def test_repr_print():
+    o = PrintTest2()
+    print("str:")
+    print(str(o))
+    print("repr:")
+    print(repr(o))
+
+
 def my_dbg(msg):
     dbg(msg, label=get_caller(), logger=my_logger)
 

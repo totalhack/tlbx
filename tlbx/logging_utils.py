@@ -186,7 +186,7 @@ class PrintMixin:
                 type(self).__name__,
                 " ".join(
                     [
-                        "%s=%s" % (field, getattr(self, field))
+                        "%s=%s" % (field, repr(getattr(self, field)))
                         for field in self.repr_attrs
                     ]
                 ),
@@ -194,4 +194,4 @@ class PrintMixin:
         return "<%s %s>" % (type(self).__name__, id(self))
 
     def __str__(self):
-        return str(vars(self))
+        return str(pf(vars(self)))

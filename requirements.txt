@@ -2,6 +2,7 @@ black
 climax
 imapclient
 orderedset
+pandas
 pre-commit
 pytest
 pylint
