@@ -25,6 +25,10 @@ class Arg:
     def name(self):
         return self.args[0]
 
+    @property
+    def dest(self):
+        return self.kwargs.get("dest", None) or self.args[0].lstrip("-")
+
 
 class Script:
     """Decorator for main function in a script that provides CLI parsing"""
