@@ -1,5 +1,5 @@
 import logging
-from pprint import pformat as pf, pprint as pp
+from pprintpp import pformat as pf, pprint as pp
 from reprlib import Repr
 import shutil
 import sys

@@ -1,8 +1,9 @@
 black
 climax
 imapclient
-orderedset
+orderedset>=2.0.3
 pandas
+pprintpp
 pre-commit
 pytest
 pylint
