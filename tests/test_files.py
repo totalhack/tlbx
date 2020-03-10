@@ -1,5 +1,6 @@
 from .test_utils import *
-from tlbx.file_utils import open_filepath_or_buffer
+from tlbx import st
+from tlbx.file_utils import open_filepath_or_buffer, shell
 
 
 def test_open_filepath_or_buffer():
@@ -11,3 +12,8 @@ def test_open_filepath_or_buffer():
     finally:
         if close:
             f.close()
+
+
+def test_shell():
+    out = shell("ls -lt /tmp", shell=True)
+    assert out

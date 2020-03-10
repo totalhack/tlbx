@@ -1,5 +1,6 @@
 import os
 import subprocess
+import sys
 
 from pandas.io.common import get_filepath_or_buffer
 
@@ -19,7 +20,13 @@ def rmfile(filename, ignore_missing=False):
 
 
 def shell(cmd, shell=True, capture_output=True, **kwargs):
-    return subprocess.run(cmd, shell=shell, capture_output=capture_output, **kwargs)
+    if sys.version_info.major == 3 and sys.version_info.minor >= 7:
+        return subprocess.run(cmd, shell=shell, capture_output=capture_output, **kwargs)
+    else:
+        process = subprocess.Popen(
+            cmd, shell=shell, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        )
+        return process.communicate()
 
 
 def open_filepath_or_buffer(f, open_flags="r", compression=None):
