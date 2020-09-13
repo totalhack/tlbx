@@ -67,8 +67,8 @@ def get_logging_level(logger=None):
     return logger.getEffectiveLevel()
 
 
-def sqlformat(sql):
-    return sp.format(sql, reindent=True, keyword_case="upper")
+def sqlformat(sql, reindent=True, keyword_case=None):
+    return sp.format(sql, reindent=reindent, keyword_case=keyword_case)
 
 
 def format_msg(

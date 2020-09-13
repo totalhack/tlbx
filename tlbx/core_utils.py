@@ -4,4 +4,5 @@ def raiseif(cond, msg="", exc=AssertionError):
 
 
 def raiseifnot(cond, msg="", exc=AssertionError):
-    raiseif(not cond, msg=msg, exc=exc)
+    if not cond:
+        raise exc(msg)

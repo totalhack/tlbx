@@ -5,6 +5,16 @@ import inspect
 import sys
 
 
+def igetattr(obj, attr, *args):
+    """Case-insensitive getattr"""
+    for a in dir(obj):
+        if a.lower() == attr.lower():
+            return getattr(obj, a)
+    if args:
+        return args[0]
+    raise AttributeError("type object '%s' has no attribute '%s'" % (type(obj), attr))
+
+
 def get_class_vars(cls):
     return {
         i for i in dir(cls) if (not isinstance(i, Callable)) and (not i.startswith("_"))

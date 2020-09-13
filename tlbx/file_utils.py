@@ -1,6 +1,7 @@
 import os
 import subprocess
 import sys
+import time
 
 from pandas.io.common import get_filepath_or_buffer
 
@@ -61,3 +62,29 @@ def open_filepath_or_buffer(f, open_flags="r", compression=None):
     f, handles = get_handle(f, open_flags, compression=compression)
 
     return f, handles, close
+
+
+def read_filepath_or_buffer(f, open_flags="r", compression=None):
+    """Open and read files or buffers, local or remote"""
+    f, handles, close = open_filepath_or_buffer(
+        f, open_flags=open_flags, compression=compression
+    )
+    try:
+        data = f.read()
+    finally:
+        if close:
+            try:
+                f.close()
+            except ValueError:
+                pass
+    return data
+
+
+def get_modified_time(fname):
+    """Utility to get the modified time of a file"""
+    return os.stat(fname).st_mtime
+
+
+def get_time_since_modified(fname):
+    """Utility to get the time since a file was last modified"""
+    return time.time() - get_modified_time(fname)
