@@ -1,15 +1,9 @@
-black
 climax
 imapclient
-orderedset>=2.0.3
-pandas
+orderedset~=2.0.3
 pprintpp
-pre-commit
-pytest
-pylint
 python-dateutil
 requests
 simplejson
 sqlparse
-twine
-wheel
+

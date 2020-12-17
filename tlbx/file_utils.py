@@ -3,12 +3,19 @@ import subprocess
 import sys
 import time
 
-from pandas.io.common import get_filepath_or_buffer
-
+pandas = None
 try:
-    from pandas.io.common import _get_handle as get_handle
+    import pandas
 except ImportError:
-    from pandas.io.common import get_handle
+    pass
+
+if pandas:
+    from pandas.io.common import get_filepath_or_buffer
+
+    try:
+        from pandas.io.common import _get_handle as get_handle
+    except ImportError:
+        from pandas.io.common import get_handle
 
 
 def rmfile(filename, ignore_missing=False):
@@ -53,6 +60,9 @@ def open_filepath_or_buffer(f, open_flags="r", compression=None):
         A flag indicating whether the caller should close the file object when done
 
     """
+    if not pandas:
+        raise Exception("Please install pandas to use this function")
+
     f, _, compression, should_close = get_filepath_or_buffer(f, compression=compression)
 
     close = False or should_close
