@@ -21,6 +21,8 @@ _repr.maxtuple = 5
 _repr.maxset = 5
 repr = _repr.repr
 
+DEFAULT_TERM_WIDTH = 80
+
 
 class FontSpecialChars:
     ENDC = "\033[0m"
@@ -74,8 +76,9 @@ def sqlformat(sql, reindent=True, keyword_case=None):
 def format_msg(
     msg, label="parent", indent=None, color=None, autocolor=False, format_func=pf
 ):
-    term_width = get_terminal_width()
+    term_width = get_terminal_width() or DEFAULT_TERM_WIDTH
     effective_width = term_width
+    indent_str = None
 
     if label == "parent":
         label = get_caller()
@@ -87,7 +90,9 @@ def format_msg(
         else:
             indent = int(indent)
             indent_str = " " * indent
-        effective_width = effective_width - len(indent_str)
+        effective_width = (
+            max(effective_width - len(indent_str), 0) or DEFAULT_TERM_WIDTH
+        )
 
     if isinstance(format_func, str):
         format_func = globals()[format_func]
