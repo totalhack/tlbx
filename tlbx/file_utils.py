@@ -10,7 +10,10 @@ except ImportError:
     pass
 
 if pandas:
-    from pandas.io.common import get_filepath_or_buffer
+    try:
+        from pandas.io.common import _get_filepath_or_buffer as get_filepath_or_buffer
+    except ImportError:
+        from pandas.io.common import get_filepath_or_buffer
 
     try:
         from pandas.io.common import _get_handle as get_handle
@@ -63,13 +66,26 @@ def open_filepath_or_buffer(f, open_flags="r", compression=None):
     if not pandas:
         raise Exception("Please install pandas to use this function")
 
-    f, _, compression, should_close = get_filepath_or_buffer(f, compression=compression)
+    res = get_filepath_or_buffer(f, compression=compression)
+    # HACK: handle multiple pandas versions
+    try:
+        f, _, compression, should_close = res
+    except TypeError:
+        f = res.filepath_or_buffer
+        compression = res.compression
+        should_close = res.should_close
 
     close = False or should_close
     if isinstance(f, str):
         close = True
 
-    f, handles = get_handle(f, open_flags, compression=compression)
+    res = get_handle(f, open_flags, compression=compression)
+    # HACK: handle multiple pandas versions
+    try:
+        f, handles = res
+    except TypeError:
+        f = res.handle
+        handles = res.created_handles
 
     return f, handles, close
 
