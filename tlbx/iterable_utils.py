@@ -2,7 +2,7 @@ from functools import reduce
 from itertools import chain, combinations
 from operator import or_
 
-from orderedset import OrderedSet
+from ordered_set import OrderedSet
 
 
 def powerset(iterable):
@@ -46,4 +46,7 @@ def orderedsetify(obj):
         return obj
     if isinstance(obj, (list, tuple)):
         return OrderedSet(obj)
+    if isinstance(obj, dict):
+        # Assumes keys are ordered!
+        return OrderedSet(obj.keys())
     assert False, "Not sure how to setify %s" % obj
