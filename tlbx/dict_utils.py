@@ -1,5 +1,6 @@
 from collections import OrderedDict
 from collections.abc import MutableMapping
+from functools import reduce
 
 try:
     import simplejson as json
@@ -34,6 +35,23 @@ def dictmerge(x, y, path=None, overwrite=False):
         else:
             x[key] = y[key]
     return x
+
+
+def rhaskey(d, path):
+    try:
+        reduce(lambda x, y: x[y], path.split("."), d)
+        return True
+    except KeyError:
+        return False
+
+
+def rgetkey(d, path, *default):
+    try:
+        return reduce(lambda x, y: x[y], path.split("."), d)
+    except KeyError:
+        if default:
+            return default[0]
+        raise
 
 
 # https://stackoverflow.com/questions/16664874/how-can-i-add-an-element-at-the-top-of-an-ordereddict-in-python

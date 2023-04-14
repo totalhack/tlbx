@@ -1,5 +1,5 @@
 from collections.abc import MutableMapping, Callable
-from functools import wraps
+from functools import wraps, reduce
 from importlib import import_module
 import inspect
 import sys
@@ -13,6 +13,24 @@ def igetattr(obj, attr, *args):
     if args:
         return args[0]
     raise AttributeError("type object '%s' has no attribute '%s'" % (type(obj), attr))
+
+
+# https://stackoverflow.com/a/54547158/10682164
+def rgetattr(obj, path, *default):
+    try:
+        return reduce(getattr, path.split("."), obj)
+    except AttributeError:
+        if default:
+            return default[0]
+        raise
+
+
+def rhasattr(obj, path):
+    try:
+        reduce(getattr, path.split("."), obj)
+        return True
+    except AttributeError:
+        return False
 
 
 def get_class_vars(cls):
