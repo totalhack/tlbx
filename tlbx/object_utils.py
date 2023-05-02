@@ -70,7 +70,9 @@ def import_object(name):
 
 # https://stackoverflow.com/questions/1389180/automatically-initialize-instance-variables
 def initializer(func):
-    names, varargs, keywords, defaults = inspect.getargspec(func)
+    result = inspect.getfullargspec(func)
+    names = result.args
+    defaults = result.defaults
 
     @wraps(func)
     def wrapper(self, *args, **kwargs):

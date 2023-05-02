@@ -29,8 +29,17 @@ for repo in git_requires:
     non_git_requires.append(repo.split("egg=")[-1])
 
 extras_require = {
-    "pandas": ["pandas~=1.5.3"],
-    "dev": ["black", "pre-commit", "pylint", "pytest~=5.3.2", "twine~=3.1.1", "wheel"],
+    "pandas": [
+        "pandas~=1.5.3",
+    ],
+    "dev": [
+        "black",
+        "pre-commit",
+        "pylint",
+        "pytest==7.1.2",
+        "twine~=3.1.1",
+        "wheel",
+    ],
 }
 extras_require["complete"] = sorted(set(sum(extras_require.values(), [])))
 
